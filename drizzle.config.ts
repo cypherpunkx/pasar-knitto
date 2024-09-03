@@ -1,5 +1,5 @@
 import { defineConfig } from 'drizzle-kit';
-import configurations from '@/configs';
+import configurations from './src/configs';
 
 export default defineConfig({
   dialect: 'mysql',
