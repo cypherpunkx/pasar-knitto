@@ -41,36 +41,16 @@
     "moduleResolution": "Node" /* Specify how TypeScript looks up a file from a given module specifier. */,
     "baseUrl": "./src" /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
-      "@app/*": [
-        "./app/*"
-      ],
-      "@controllers/*": [
-        "./app/controllers/*"
-      ],
-      "@middlewares/*": [
-        "./app/middlewares/*"
-      ],
-      "@repositories/*": [
-        "./app/repositories/*"
-      ],
-      "@services/*": [
-        "./app/services/*"
-      ],
-      "@routes/*": [
-        "./app/routes/*"
-      ],
-      "@configs/*": [
-        "./configs/*"
-      ],
-      "@constants/*": [
-        "./constants/*"
-      ],
-      "@libs/*": [
-        "./libs/*"
-      ],
-      "@utils/*": [
-        "./utils/*"
-      ]
+      "@app/*": ["./app/*"],
+      "@controllers/*": ["./app/controllers/*"],
+      "@middlewares/*": ["./app/middlewares/*"],
+      "@repositories/*": ["./app/repositories/*"],
+      "@services/*": ["./app/services/*"],
+      "@routes/*": ["./app/routes/*"],
+      "@configs/*": ["./configs/*"],
+      "@constants/*": ["./constants/*"],
+      "@libs/*": ["./libs/*"],
+      "@utils/*": ["./utils/*"]
     } /* Specify a set of entries that re-map imports to additional lookup locations. */,
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
@@ -142,9 +122,7 @@
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "exclude": [
     "node_modules",
     "dist",
