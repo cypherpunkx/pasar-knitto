@@ -1,10 +1,10 @@
 import type { Request, Response, NextFunction } from 'express';
-import { sendResponse } from '@/utils/sendResponse';
-import { StatusCodes } from 'http-status-codes';
-import logger from '@/configs/logger';
-import { ValiError } from 'valibot';
 import { HttpError } from 'http-errors';
+import { ValiError } from 'valibot';
 import jwt from 'jsonwebtoken';
+import { StatusCodes } from 'http-status-codes';
+import { sendResponse } from '@utils/sendResponse';
+import logger from '@configs/logger';
 
 function errorMiddleware(
   error: unknown,

@@ -2,7 +2,7 @@ import type { Request } from 'express';
 import path from 'path';
 import multer, { type FileFilterCallback } from 'multer';
 import fs from 'fs';
-import configurations from '@/configs';
+import configurations from '@configs/index';
 import logger from './logger';
 
 // Konfigurasi Multer

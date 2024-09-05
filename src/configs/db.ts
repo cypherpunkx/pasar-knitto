@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
-import configurations from '@/configs';
+import configurations from '@configs/index';
 import Bluebird from 'bluebird';
 import logger from './logger';
 

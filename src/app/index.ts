@@ -4,9 +4,9 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import compression from 'compression';
 import helmet from 'helmet';
-import logger from '@/configs/logger';
-import errorMiddleware from './middlewares/error.middleware';
-import productRoutes from './routes/product.routes';
+import logger from '@configs/logger';
+import errorMiddleware from '@middlewares/error.middleware';
+import productRoutes from '@routes/product.routes';
 
 const app = express();
 
