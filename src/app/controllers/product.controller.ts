@@ -19,14 +19,14 @@ class ProductController {
 
   async addNewProduct(req: Request, res: Response, next: NextFunction) {
     try {
-      const { name, category, price, availability, brand, description } =
+      const { name, categoryId, price, availability, brand, description } =
         req.body as Product;
 
       const file = req.file;
 
       const payload: Product = {
         name,
-        category,
+        categoryId,
         price,
         availability,
         brand,
@@ -134,14 +134,14 @@ class ProductController {
     try {
       const { id } = req.params;
 
-      const { name, category, price, availability, brand, description } =
+      const { name, categoryId, price, availability, brand, description } =
         req.body as Product;
 
       const file = req.file;
 
       const payload: Partial<Product> = {
         name,
-        category,
+        categoryId,
         price,
         availability,
         brand,

@@ -15,7 +15,13 @@ import {
 class ProductSchema {
   static CreateProductSchema = createInsertSchema(model.product, {
     name: pipe(string('Name must be string'), nonEmpty('Name is required')),
-    category: optional(string('Category must be string')),
+    categoryId: optional(
+      pipe(
+        string(),
+        transform((input) => parseInt(input)),
+        number('Category id must be number')
+      )
+    ),
     price: pipe(
       string(),
       transform((input) => parseInt(input)),
@@ -41,7 +47,13 @@ class ProductSchema {
     name: optional(
       pipe(string('Name must be string'), nonEmpty('Name is required'))
     ),
-    category: optional(string('Category must be string')),
+    categoryId: optional(
+      pipe(
+        string(),
+        transform((input) => parseInt(input)),
+        number('Category id must be number')
+      )
+    ),
     price: optional(
       pipe(
         string(),

@@ -1,10 +1,24 @@
-import { int, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core';
+import {
+  int,
+  mysqlTable,
+  timestamp,
+  uniqueIndex,
+  varchar,
+} from 'drizzle-orm/mysql-core';
 
-export const category = mysqlTable('categories', {
-  id: int('id', { unsigned: true }).autoincrement().primaryKey(),
-  name: varchar('name', { length: 255 }).notNull(),
-  createdAt: timestamp('created_at').defaultNow(),
-});
+export const category = mysqlTable(
+  'categories',
+  {
+    id: int('id', { unsigned: true }).autoincrement().primaryKey(),
+    name: varchar('name', { length: 255 }).notNull(),
+    createdAt: timestamp('created_at').defaultNow(),
+  },
+  (table) => {
+    return {
+      nameIdx: uniqueIndex('name_idx').on(table.name),
+    };
+  }
+);
 
 export type Category = typeof category.$inferInsert;
 export type Categories = typeof category.$inferSelect;
