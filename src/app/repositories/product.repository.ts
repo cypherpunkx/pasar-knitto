@@ -1,8 +1,9 @@
 import { MySql2Database } from 'drizzle-orm/mysql2';
 // import { MySqlColumn } from 'drizzle-orm/mysql-core';
-import { eq, like, max, min } from 'drizzle-orm';
+import { between, eq, like, max, min } from 'drizzle-orm';
 import logger from '@configs/logger';
-import model, { Product } from '@models/products.model';
+import CategoryModel from '@models/category.model';
+import ProductModel, { Product } from '@models/products.model';
 
 class ProductRepository {
   constructor(private _db: MySql2Database<Record<string, never>>) {
@@ -17,10 +18,10 @@ class ProductRepository {
 
   async create(payload: Product) {
     const [result, field] = await this._db
-      .insert(model.product)
+      .insert(ProductModel.table)
       .values(payload);
 
-    const sql = this._db.insert(model.product).values(payload).toSQL();
+    const sql = this._db.insert(ProductModel.table).values(payload).toSQL();
 
     logger.info(`Field : ${field || 'empty'}`);
     logger.sql(`Query : ${sql.sql}`, { sql });
@@ -29,10 +30,37 @@ class ProductRepository {
     return result;
   }
 
-  async find() {
-    const result = await this._db.select().from(model.product);
+  async find(range: number) {
+    let result = await this._db
+      .select()
+      .from(ProductModel.table)
+      .leftJoin(
+        CategoryModel.table,
+        eq(ProductModel.table.categoryId, CategoryModel.table.id)
+      );
 
-    const sql = this._db.select().from(model.product).toSQL();
+    let sql = this._db.select().from(ProductModel.table).toSQL();
+
+    if (range) {
+      const { min } = await this.getRangePrice();
+      result = await this._db
+        .select()
+        .from(ProductModel.table)
+        .leftJoin(
+          CategoryModel.table,
+          eq(ProductModel.table.categoryId, CategoryModel.table.id)
+        )
+        .where(between(ProductModel.table.price, min!, range));
+
+      sql = this._db
+        .select()
+        .from(ProductModel.table)
+        .leftJoin(
+          CategoryModel.table,
+          eq(ProductModel.table.categoryId, CategoryModel.table.id)
+        )
+        .toSQL();
+    }
 
     logger.sql(`Query : ${sql.sql}`, { sql });
     logger.sql(`Params : ${sql.params}`, { sql });
@@ -49,13 +77,13 @@ class ProductRepository {
   async search(q: string) {
     const result = await this._db
       .select()
-      .from(model.product)
-      .where(like(model.product.name, `%${q}%`));
+      .from(ProductModel.table)
+      .where(like(ProductModel.table.name, `%${q}%`));
 
     const sql = this._db
       .select()
-      .from(model.product)
-      .where(like(model.product.name, `%${q}%`))
+      .from(ProductModel.table)
+      .where(like(ProductModel.table.name, `%${q}%`))
       .toSQL();
 
     logger.sql(`Query : ${sql.sql}`, { sql });
@@ -74,13 +102,21 @@ class ProductRepository {
   async get(id: number) {
     const [result] = await this._db
       .select()
-      .from(model.product)
-      .where(eq(model.product.id, id));
+      .from(ProductModel.table)
+      .where(eq(ProductModel.table.id, id))
+      .leftJoin(
+        CategoryModel.table,
+        eq(ProductModel.table.categoryId, CategoryModel.table.id)
+      );
 
     const sql = this._db
       .select()
-      .from(model.product)
-      .where(eq(model.product.id, id))
+      .from(ProductModel.table)
+      .where(eq(ProductModel.table.id, id))
+      .innerJoin(
+        CategoryModel.table,
+        eq(ProductModel.table.categoryId, CategoryModel.table.id)
+      )
       .toSQL();
 
     logger.sql(`Query : ${sql.sql}`, { sql });
@@ -103,13 +139,13 @@ class ProductRepository {
   async getByFilename(filename: string) {
     const [result] = await this._db
       .select()
-      .from(model.product)
-      .where(eq(model.product.image, filename));
+      .from(ProductModel.table)
+      .where(eq(ProductModel.table.image, filename));
 
     const sql = this._db
       .select()
-      .from(model.product)
-      .where(eq(model.product.image, filename))
+      .from(ProductModel.table)
+      .where(eq(ProductModel.table.image, filename))
       .toSQL();
 
     logger.sql(`Query : ${sql.sql}`, { sql });
@@ -132,17 +168,17 @@ class ProductRepository {
   async getRangePrice() {
     const [result] = await this._db
       .select({
-        min: min(model.product.price),
-        max: max(model.product.price),
+        min: min(ProductModel.table.price),
+        max: max(ProductModel.table.price),
       })
-      .from(model.product);
+      .from(ProductModel.table);
 
     const sql = this._db
       .select({
-        min: min(model.product.price),
-        max: max(model.product.price),
+        min: min(ProductModel.table.price),
+        max: max(ProductModel.table.price),
       })
-      .from(model.product)
+      .from(ProductModel.table)
       .toSQL();
 
     logger.sql(`Query : ${sql.sql}`, { sql });
@@ -164,14 +200,14 @@ class ProductRepository {
 
   async update(id: number, payload: Partial<Product>) {
     const [result, field] = await this._db
-      .update(model.product)
+      .update(ProductModel.table)
       .set(payload)
-      .where(eq(model.product.id, id));
+      .where(eq(ProductModel.table.id, id));
 
     const sql = this._db
-      .update(model.product)
+      .update(ProductModel.table)
       .set(payload)
-      .where(eq(model.product.id, id))
+      .where(eq(ProductModel.table.id, id))
       .toSQL();
 
     logger.info(`Field : ${field || 'empty'}`);

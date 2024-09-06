@@ -50,9 +50,11 @@ class ProductController {
     }
   }
 
-  async getAllProducts(_req: Request, res: Response, next: NextFunction) {
+  async getAllProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const response = await this._service.getAll();
+      const { range } = req.query;
+
+      const response = await this._service.getAll(range as string);
 
       return sendResponse(
         {
