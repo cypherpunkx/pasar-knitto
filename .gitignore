@@ -4,6 +4,7 @@ logs/**/*
 !logs/**/.gitkeep
 /uploads/**
 !/uploads/**/.gitkeep
+!/uploads/**/default.png
 !/database/**/.gitkeep
 *.tmp
 /build/

@@ -13,7 +13,11 @@ const controller = new ProductController(service);
 
 router.get('/', controller.getAllProducts);
 router.get('/search', controller.searchAllProducts);
+router.get('/range-price', controller.getMinMaxProductPrice);
 router.get('/:id', controller.getProductById);
+router.get('/download/:filename', controller.downloadProductImage);
+router.get('/preview/:filename', controller.previewProductImage);
 router.post('/', upload.single('image'), controller.addNewProduct);
+router.put('/:id', upload.single('image'), controller.editProduct);
 
 export default router;

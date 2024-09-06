@@ -36,6 +36,34 @@ class ProductSchema {
     description: optional(string('Description must be string')),
     image: optional(string('Image must be string')),
   });
+
+  static UpdateProductSchmea = createInsertSchema(model.product, {
+    name: optional(
+      pipe(string('Name must be string'), nonEmpty('Name is required'))
+    ),
+    category: optional(string('Category must be string')),
+    price: optional(
+      pipe(
+        string(),
+        transform((input) => parseInt(input)),
+        number('Price must be number'),
+        minValue(0, 'Price must be greater than 0')
+      )
+    ),
+    availability: optional(
+      pipe(
+        picklist(
+          ['true', 'false'],
+          'Availability harus salah satu dari true atau false'
+        ),
+        transform((input) => Boolean(input)),
+        boolean('Availability must be boolean')
+      )
+    ),
+    brand: optional(string('Brand must be string')),
+    description: optional(string('Description must be string')),
+    image: optional(string('Image must be string')),
+  });
 }
 
 export default ProductSchema;

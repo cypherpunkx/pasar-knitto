@@ -1,3 +1,10 @@
+CREATE TABLE `categories` (
+	`id` int unsigned AUTO_INCREMENT NOT NULL,
+	`name` varchar(255) NOT NULL,
+	`created_at` timestamp DEFAULT (now()),
+	CONSTRAINT `categories_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
 CREATE TABLE `products` (
 	`id` int unsigned AUTO_INCREMENT NOT NULL,
 	`name` varchar(255) NOT NULL,
@@ -10,3 +17,6 @@ CREATE TABLE `products` (
 	`created_at` timestamp DEFAULT (now()),
 	CONSTRAINT `products_id` PRIMARY KEY(`id`)
 );
+--> statement-breakpoint
+DROP TABLE `migrations`;--> statement-breakpoint
+DROP TABLE `users`;
