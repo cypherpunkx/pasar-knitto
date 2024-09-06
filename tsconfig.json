@@ -43,6 +43,8 @@
     "paths": {
       "@app/*": ["./app/*"],
       "@controllers/*": ["./app/controllers/*"],
+      "@models/*": ["./models/*"],
+      "@schemas/*": ["./schemas/*"],
       "@middlewares/*": ["./app/middlewares/*"],
       "@repositories/*": ["./app/repositories/*"],
       "@services/*": ["./app/services/*"],

@@ -1,0 +1,13 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1725419445203,
+      "tag": "0000_bumpy_proteus",
+      "breakpoints": true
+    }
+  ]
+}
