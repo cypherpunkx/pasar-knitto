@@ -1,6 +1,6 @@
 import { int, mysqlTable, timestamp, varchar } from 'drizzle-orm/mysql-core';
 
-export const category = mysqlTable('products', {
+export const category = mysqlTable('categories', {
   id: int('id', { unsigned: true }).autoincrement().primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
