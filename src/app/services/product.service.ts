@@ -26,8 +26,10 @@ class ProductService {
     return result;
   }
 
-  async getAll() {
-    const result = await this._repository.find();
+  async getAll(range: string | number) {
+    range = Number(range);
+
+    const result = await this._repository.find(range);
 
     return result;
   }

@@ -1,4 +1,3 @@
-import model from '@models/products.model';
 import { createInsertSchema } from 'drizzle-valibot';
 import {
   boolean,
@@ -11,9 +10,10 @@ import {
   string,
   transform,
 } from 'valibot';
+import ProductModel from '@models/products.model';
 
 class ProductSchema {
-  static CreateProductSchema = createInsertSchema(model.product, {
+  static CreateProductSchema = createInsertSchema(ProductModel.table, {
     name: pipe(string('Name must be string'), nonEmpty('Name is required')),
     categoryId: optional(
       pipe(
@@ -43,7 +43,7 @@ class ProductSchema {
     image: optional(string('Image must be string')),
   });
 
-  static UpdateProductSchmea = createInsertSchema(model.product, {
+  static UpdateProductSchmea = createInsertSchema(ProductModel.table, {
     name: optional(
       pipe(string('Name must be string'), nonEmpty('Name is required'))
     ),

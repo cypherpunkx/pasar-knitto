@@ -6,21 +6,23 @@ import {
   varchar,
 } from 'drizzle-orm/mysql-core';
 
-export const category = mysqlTable(
-  'categories',
-  {
-    id: int('id', { unsigned: true }).autoincrement().primaryKey(),
-    name: varchar('name', { length: 255 }).notNull(),
-    createdAt: timestamp('created_at').defaultNow(),
-  },
-  (table) => {
-    return {
-      nameIdx: uniqueIndex('name_idx').on(table.name),
-    };
-  }
-);
+class CategoryModel {
+  static table = mysqlTable(
+    'categories',
+    {
+      id: int('id', { unsigned: true }).autoincrement().primaryKey(),
+      name: varchar('name', { length: 255 }).notNull(),
+      createdAt: timestamp('created_at').defaultNow(),
+    },
+    (table) => {
+      return {
+        nameIdx: uniqueIndex('name_idx').on(table.name),
+      };
+    }
+  );
+}
 
-export type Category = typeof category.$inferInsert;
-export type Categories = typeof category.$inferSelect;
+export type Category = typeof CategoryModel.table.$inferInsert;
+export type Categories = typeof CategoryModel.table.$inferSelect;
 
-export default { category: category };
+export default CategoryModel;
