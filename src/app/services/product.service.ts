@@ -12,10 +12,11 @@ class ProductService {
     this.createProduct = this.createProduct.bind(this);
     this.getAll = this.getAll.bind(this);
     this.getById = this.getById.bind(this);
-    this.getRangeProductPrice = this.getRangeProductPrice.bind(this);
-    this.searchByName = this.searchByName.bind(this);
     this.updateProductById = this.updateProductById.bind(this);
+    this.deleteProductById = this.deleteProductById.bind(this);
+    this.searchByName = this.searchByName.bind(this);
     this.getFileMetadata = this.getFileMetadata.bind(this);
+    this.getRangeProductPrice = this.getRangeProductPrice.bind(this);
   }
 
   async createProduct(payload: Product) {
@@ -60,6 +61,18 @@ class ProductService {
     }
 
     const result = await this._repository.update(id, payload);
+
+    return result;
+  }
+
+  async deleteProductById(id: number) {
+    const product = await this._repository.get(id);
+
+    if (!product) {
+      throw new NotFound('Produk tidak ditemukan');
+    }
+
+    const result = await this._repository.delete(id);
 
     return result;
   }

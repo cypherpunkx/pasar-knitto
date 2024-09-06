@@ -1,5 +1,4 @@
 import { MySql2Database } from 'drizzle-orm/mysql2';
-// import { MySqlColumn } from 'drizzle-orm/mysql-core';
 import { between, eq, like, max, min } from 'drizzle-orm';
 import logger from '@configs/logger';
 import CategoryModel from '@models/category.model';
@@ -10,10 +9,11 @@ class ProductRepository {
     this.create = this.create.bind(this);
     this.find = this.find.bind(this);
     this.get = this.get.bind(this);
+    this.update = this.update.bind(this);
+    this.delete = this.delete.bind(this);
+    this.search = this.search.bind(this);
     this.getByFilename = this.getByFilename.bind(this);
     this.getRangePrice = this.getRangePrice.bind(this);
-    this.update = this.update.bind(this);
-    this.search = this.search.bind(this);
   }
 
   async create(payload: Product) {
@@ -66,12 +66,6 @@ class ProductRepository {
     logger.sql(`Params : ${sql.params}`, { sql });
 
     return result;
-
-    // const response = await fetch('https://dummyjson.com/products');
-
-    // const json = await response.json();
-
-    // return json;
   }
 
   async search(q: string) {
@@ -89,14 +83,6 @@ class ProductRepository {
     logger.sql(`Query : ${sql.sql}`, { sql });
 
     return result;
-
-    // const response = await fetch(
-    //   `https://dummyjson.com/products/search?${searchParams}}`
-    // );
-
-    // const json = await response.json();
-
-    // return json;
   }
 
   async get(id: number) {
@@ -123,17 +109,6 @@ class ProductRepository {
     logger.sql(`Params : ${sql.params}`, { sql });
 
     return result;
-
-    // const response = await fetch(`https://dummyjson.com/products/${id}`);
-
-    // if (response.status === 404) {
-    //   const json = await response.json();
-    //   throw new NotFound((json as any).message);
-    // }
-
-    // const json = await response.json();
-
-    // return json;
   }
 
   async getByFilename(filename: string) {
@@ -152,17 +127,6 @@ class ProductRepository {
     logger.sql(`Params : ${sql.params}`, { sql });
 
     return result;
-
-    // const response = await fetch(`https://dummyjson.com/products/${id}`);
-
-    // if (response.status === 404) {
-    //   const json = await response.json();
-    //   throw new NotFound((json as any).message);
-    // }
-
-    // const json = await response.json();
-
-    // return json;
   }
 
   async getRangePrice() {
@@ -185,17 +149,6 @@ class ProductRepository {
     logger.sql(`Params : ${sql.params}`, { sql });
 
     return result;
-
-    // const response = await fetch(`https://dummyjson.com/products/${id}`);
-
-    // if (response.status === 404) {
-    //   const json = await response.json();
-    //   throw new NotFound((json as any).message);
-    // }
-
-    // const json = await response.json();
-
-    // return json;
   }
 
   async update(id: number, payload: Partial<Product>) {
@@ -207,6 +160,23 @@ class ProductRepository {
     const sql = this._db
       .update(ProductModel.table)
       .set(payload)
+      .where(eq(ProductModel.table.id, id))
+      .toSQL();
+
+    logger.info(`Field : ${field || 'empty'}`);
+    logger.sql(`Query : ${sql.sql}`, { sql });
+    logger.sql(`Params : ${sql.params}`, { sql });
+
+    return result;
+  }
+
+  async delete(id: number) {
+    const [result, field] = await this._db
+      .delete(ProductModel.table)
+      .where(eq(ProductModel.table.id, id));
+
+    const sql = this._db
+      .delete(ProductModel.table)
       .where(eq(ProductModel.table.id, id))
       .toSQL();
 

@@ -19,5 +19,6 @@ router.get('/download/:filename', controller.downloadProductImage);
 router.get('/preview/:filename', controller.previewProductImage);
 router.post('/', upload.single('image'), controller.addNewProduct);
 router.put('/:id', upload.single('image'), controller.editProduct);
+router.delete('/:id', controller.deleteProduct);
 
 export default router;

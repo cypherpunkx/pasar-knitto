@@ -15,6 +15,7 @@ class ProductController {
     this.downloadProductImage = this.downloadProductImage.bind(this);
     this.previewProductImage = this.previewProductImage.bind(this);
     this.editProduct = this.editProduct.bind(this);
+    this.deleteProduct = this.deleteProduct.bind(this);
   }
 
   async addNewProduct(req: Request, res: Response, next: NextFunction) {
@@ -157,6 +158,25 @@ class ProductController {
         {
           statusCode: 200,
           message: 'Berhasil memperbaharui produk',
+          status: 'success',
+        },
+        res
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async deleteProduct(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+
+      await this._service.deleteProductById(+id);
+
+      return sendResponse(
+        {
+          statusCode: 200,
+          message: 'Berhasil menghapus produk',
           status: 'success',
         },
         res
