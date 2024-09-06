@@ -3,8 +3,10 @@ import configurations from './src/configs';
 
 export default defineConfig({
   dialect: 'mysql',
-  schema: './src/schema.ts',
+  schema: './src/models/*.model.ts',
   out: './database/migrations',
+  introspect: { casing: 'camel' },
+  migrations: { table: 'migrations' },
   dbCredentials: {
     host: configurations.DB_HOST,
     user: configurations.DB_USER,

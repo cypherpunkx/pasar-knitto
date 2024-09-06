@@ -1,10 +1,11 @@
 import type { Request, Response, NextFunction } from 'express';
-import { sendResponse } from '@/utils/sendResponse';
+import { sendResponse } from '@utils/sendResponse';
 import { StatusCodes } from 'http-status-codes';
-import logger from '@/configs/logger';
+import logger from '@configs/logger';
 import { ValiError } from 'valibot';
 import { HttpError } from 'http-errors';
 import jwt from 'jsonwebtoken';
+import { MulterError } from 'multer';
 
 function errorMiddleware(
   error: unknown,
@@ -50,6 +51,18 @@ function errorMiddleware(
 
     case error instanceof ValiError:
       logger.error(`Validation error : ${error.message}`, { error });
+      sendResponse(
+        {
+          statusCode: StatusCodes.BAD_REQUEST,
+          status: 'error',
+          message: error.message,
+        },
+        res
+      );
+      break;
+    case error instanceof MulterError:
+      console.log(error);
+      logger.error(`Multer error : ${error.message}`, { error });
       sendResponse(
         {
           statusCode: StatusCodes.BAD_REQUEST,

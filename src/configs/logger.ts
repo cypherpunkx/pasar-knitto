@@ -1,7 +1,7 @@
 import winston from 'winston';
 import chalk from 'chalk';
-import 'winston-daily-rotate-file';
 import { Logger } from 'drizzle-orm';
+import 'winston-daily-rotate-file';
 
 const { combine, timestamp, printf, json, colorize, prettyPrint } =
   winston.format;

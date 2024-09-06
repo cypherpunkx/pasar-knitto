@@ -2,7 +2,8 @@ import type { Request } from 'express';
 import path from 'path';
 import multer, { type FileFilterCallback } from 'multer';
 import fs from 'fs';
-import configurations from '@/configs';
+import { BadRequest } from 'http-errors';
+import configurations from '@configs/index';
 import logger from './logger';
 
 // Konfigurasi Multer
@@ -43,12 +44,18 @@ const fileFilter = (
   const extname = allowedFileTypes.test(
     path.extname(file.originalname).toLowerCase()
   );
-  const mimetype = allowedFileTypes.test(file.mimetype);
 
+  const mimetype = allowedFileTypes.test(file.mimetype);
+  console.log(extname);
+  console.log(mimetype);
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb(new Error('Error: Only images are allowed!'));
+    cb(
+      new BadRequest(
+        'File type not supported. Ensure the file has an extension matching one of the following formats: jpeg, jpg, png, gif, bmp, tiff, webp.'
+      )
+    );
   }
 };
 

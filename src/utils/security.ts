@@ -1,4 +1,4 @@
-import configurations from '@/configs';
+import configurations from '@configs/index';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 
