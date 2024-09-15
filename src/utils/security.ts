@@ -1,41 +1,34 @@
 import configurations from '@configs/index';
-import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import { hashSync, compareSync } from 'bcrypt';
 
 export const REFRESH_TOKENS = new Map();
 
-function hashPassword(
-  password: string,
-  salt = crypto.randomBytes(16).toString('hex')
-) {
-  const iteration = 10000;
-  const keylen = 64;
-  const digest = 'sha256';
-
-  const hash = crypto
-    .pbkdf2Sync(password, salt, iteration, keylen, digest)
-    .toString('hex');
-
-  return { salt, hash };
+function hashPassword(password: string, salt = 10): string {
+  return hashSync(password, salt);
 }
 
-function verifyPassword(password: string, hash: string, salt: string) {
-  const { hash: hashedPassword } = hashPassword(password, salt);
-
-  return hashedPassword === hash;
+function verifyPassword(password: string, hashedPassword: string): boolean {
+  return compareSync(password, hashedPassword);
 }
 
-function generateAccessToken(username: string) {
-  return jwt.sign({ data: username }, configurations.SECRET, {
-    expiresIn: '1h',
+function generateAccessToken(id: number) {
+  return jwt.sign({ data: id }, configurations.SECRET, {
+    expiresIn: '7h',
   });
 }
 
-function generateRefreshToken(username: string) {
-  const refreshToken = jwt.sign({ data: username }, configurations.SECRET, {
+function verifyAccessToken(token: string) {
+  return jwt.verify(token, configurations.SECRET);
+}
+
+function generateRefreshToken(id: number) {
+  const refreshToken = jwt.sign({ data: id }, configurations.SECRET, {
     expiresIn: '7d',
   });
-  REFRESH_TOKENS.set(refreshToken, username);
+
+  REFRESH_TOKENS.set(refreshToken, id);
+
   return refreshToken;
 }
 
@@ -48,5 +41,6 @@ export {
   verifyPassword,
   generateAccessToken,
   generateRefreshToken,
+  verifyAccessToken,
   generateOTP,
 };

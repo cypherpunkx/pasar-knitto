@@ -7,6 +7,7 @@ import helmet from 'helmet';
 import logger from '@configs/logger';
 import errorMiddleware from './middlewares/error.middleware';
 import productRoutes from './routes/product.routes';
+import authRoutes from './routes/auth.routes';
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use((req, _res, next) => {
   next();
 });
 
+app.use('/api/v1/pasar-knitto/auth', authRoutes);
 app.use('/api/v1/pasar-knitto/products', productRoutes);
 
 app.use(errorMiddleware);

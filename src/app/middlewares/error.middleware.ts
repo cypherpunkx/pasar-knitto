@@ -6,9 +6,6 @@ import { HttpError } from 'http-errors';
 import { ValiError } from 'valibot';
 import jwt from 'jsonwebtoken';
 import { MulterError } from 'multer';
-import { StatusCodes } from 'http-status-codes';
-import { sendResponse } from '@utils/sendResponse';
-import logger from '@configs/logger';
 
 function errorMiddleware(
   error: unknown,
@@ -76,6 +73,7 @@ function errorMiddleware(
       );
       break;
     default:
+      console.log(error);
       logger.error(
         `An unexpected error occurred: ${(error as Error).message}`,
         {

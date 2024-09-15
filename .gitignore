@@ -4,7 +4,9 @@ logs/**/*
 !logs/**/.gitkeep
 /uploads/**
 !/uploads/**/.gitkeep
-!/uploads/**/default.png
+!/uploads/**/default-profile.png
+!/uploads/**/default-product.png
+/database/**/*
 !/database/**/.gitkeep
 *.tmp
 /build/

@@ -151,6 +151,8 @@ const feedbackMessages = {
     'The rating you provided is invalid. Please provide a rating between 1 and 5 stars.',
   noFeedbackProvided:
     'No feedback provided. Please write a comment or provide a rating.',
+  changePasswordFailed:
+    'The current password you entered is incorrect. Please try again.',
 };
 
 const uploadMessages = {

@@ -52,7 +52,7 @@ class ProductService {
   }
 
   async updateProductById(id: number, payload: Partial<Product>) {
-    payload = Validator.validate(ProductSchema.UpdateProductSchmea, payload);
+    payload = Validator.validate(ProductSchema.UpdateProductSchema, payload);
 
     const product = await this._repository.get(id);
 

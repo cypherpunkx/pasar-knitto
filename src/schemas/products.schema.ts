@@ -43,7 +43,7 @@ class ProductSchema {
     image: optional(string('Image must be string')),
   });
 
-  static UpdateProductSchmea = createInsertSchema(ProductModel.table, {
+  static UpdateProductSchema = createInsertSchema(ProductModel.table, {
     name: optional(
       pipe(string('Name must be string'), nonEmpty('Name is required'))
     ),
