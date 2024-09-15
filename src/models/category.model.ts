@@ -22,6 +22,7 @@ class CategoryModel {
   );
 }
 
+export const categories = CategoryModel.table;
 export type Category = typeof CategoryModel.table.$inferInsert;
 export type Categories = typeof CategoryModel.table.$inferSelect;
 

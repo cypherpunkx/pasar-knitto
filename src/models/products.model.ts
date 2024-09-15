@@ -22,7 +22,7 @@ class ProductModel {
       availability: boolean('availability').default(false),
       brand: varchar('brand', { length: 255 }).default('other'),
       description: text('description'),
-      image: varchar('image', { length: 255 }).default('default.jpg'),
+      image: varchar('image', { length: 255 }).default('default-product.png'),
       createdAt: timestamp('created_at').defaultNow(),
       updatedAt: timestamp('updated_at').onUpdateNow(),
     },
@@ -36,6 +36,7 @@ class ProductModel {
   );
 }
 
+export const products = ProductModel.table;
 export type Product = typeof ProductModel.table.$inferInsert;
 export type Products = typeof ProductModel.table.$inferSelect;
 
