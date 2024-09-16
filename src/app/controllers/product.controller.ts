@@ -13,9 +13,11 @@ class ProductController {
     this.getMinMaxProductPrice = this.getMinMaxProductPrice.bind(this);
     this.searchAllProducts = this.searchAllProducts.bind(this);
     this.downloadProductImage = this.downloadProductImage.bind(this);
+    this.downloadProductImageById = this.downloadProductImageById.bind(this);
     this.previewProductImage = this.previewProductImage.bind(this);
     this.editProduct = this.editProduct.bind(this);
     this.deleteProduct = this.deleteProduct.bind(this);
+    this.previewProductImageById = this.previewProductImageById.bind(this);
   }
 
   async addNewProduct(req: Request, res: Response, next: NextFunction) {
@@ -200,11 +202,57 @@ class ProductController {
     }
   }
 
+  async previewProductImageById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { id } = req.params;
+
+      const { filepath } = await this._service.getFileMetadataById(+id);
+
+      res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache selama satu tahun
+
+      res.sendFile(filepath);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async downloadProductImage(req: Request, res: Response, next: NextFunction) {
     try {
       const { filename } = req.params;
 
       const { stats, filepath } = await this._service.getFileMetadata(filename);
+
+      res.setHeader('Content-Type', 'application/octet-stream');
+      res.setHeader('Content-Length', stats.size);
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${filename}"`
+      );
+      res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache selama satu tahun
+
+      const readStream = fs.createReadStream(filepath);
+      readStream.pipe(res);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async downloadProductImageById(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { id } = req.params;
+
+      const { stats, filepath } = await this._service.getFileMetadataById(+id);
+
+      const lastIndex = filepath.split('\\').length - 1;
+      const filename = filepath.split('\\')[lastIndex];
 
       res.setHeader('Content-Type', 'application/octet-stream');
       res.setHeader('Content-Length', stats.size);

@@ -16,6 +16,7 @@ class ProductService {
     this.deleteProductById = this.deleteProductById.bind(this);
     this.searchByName = this.searchByName.bind(this);
     this.getFileMetadata = this.getFileMetadata.bind(this);
+    this.getFileMetadataById = this.getFileMetadataById.bind(this);
     this.getRangeProductPrice = this.getRangeProductPrice.bind(this);
   }
 
@@ -92,6 +93,38 @@ class ProductService {
 
       if (filename !== 'default.png') {
         filepath = path.join(process.cwd(), 'uploads', dirName, filename);
+      }
+
+      const stats = await fs.stat(filepath);
+
+      logger.info(`File size: ${stats.size}`, { stats });
+
+      return {
+        stats,
+        filepath,
+      };
+    } catch (error) {
+      logger.error(`Fs error : ${(error as Error).message}`, { error });
+      throw new NotFound('File not found');
+    }
+  }
+
+  async getFileMetadataById(id: number) {
+    const result = await this._repository.get(id);
+
+    if (!result) {
+      throw new NotFound('Gambar produk tidak ditemukan');
+    }
+
+    try {
+      const now = new Date().toISOString();
+      const dirName = now.split('T')[0];
+      const filename = result.products.image;
+
+      let filepath = path.join(process.cwd(), 'uploads', filename!);
+
+      if (filename !== 'default-product.png') {
+        filepath = path.join(process.cwd(), 'uploads', dirName, filename!);
       }
 
       const stats = await fs.stat(filepath);
