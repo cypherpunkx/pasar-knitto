@@ -2,13 +2,17 @@ import fs from 'fs/promises';
 import path from 'path';
 import { NotFound } from 'http-errors';
 import { Product } from '@models/products.model';
-import ProductRepository from '@repositories/product.repository';
 import Validator from '@utils/validator';
 import ProductSchema from '@schemas/products.schema';
 import logger from '@configs/logger';
+import ProductRepository from '@repositories/product.repository';
+import CategoryRepository from '@app/repositories/category.repository';
 
 class ProductService {
-  constructor(private _repository: ProductRepository) {
+  constructor(
+    private _productRepository: ProductRepository,
+    private _categoryRepository: CategoryRepository
+  ) {
     this.createProduct = this.createProduct.bind(this);
     this.getAll = this.getAll.bind(this);
     this.getById = this.getById.bind(this);
@@ -18,12 +22,13 @@ class ProductService {
     this.getFileMetadata = this.getFileMetadata.bind(this);
     this.getFileMetadataById = this.getFileMetadataById.bind(this);
     this.getRangeProductPrice = this.getRangeProductPrice.bind(this);
+    this.getAllCategories = this.getAllCategories.bind(this);
   }
 
   async createProduct(payload: Product) {
     payload = Validator.validate(ProductSchema.CreateProductSchema, payload);
 
-    const result = await this._repository.create(payload);
+    const result = await this._productRepository.create(payload);
 
     return result;
   }
@@ -31,13 +36,13 @@ class ProductService {
   async getAll(range: string | number) {
     range = Number(range);
 
-    const result = await this._repository.find(range);
+    const result = await this._productRepository.find(range);
 
     return result;
   }
 
   async getById(id: number) {
-    const result = await this._repository.get(id);
+    const result = await this._productRepository.get(id);
 
     if (!result) {
       throw new NotFound('Produk tidak ditemukan');
@@ -47,7 +52,7 @@ class ProductService {
   }
 
   async searchByName(q: string) {
-    const result = await this._repository.search(q);
+    const result = await this._productRepository.search(q);
 
     return result;
   }
@@ -55,31 +60,31 @@ class ProductService {
   async updateProductById(id: number, payload: Partial<Product>) {
     payload = Validator.validate(ProductSchema.UpdateProductSchema, payload);
 
-    const product = await this._repository.get(id);
+    const product = await this._productRepository.get(id);
 
     if (!product) {
       throw new NotFound('Produk tidak ditemukan');
     }
 
-    const result = await this._repository.update(id, payload);
+    const result = await this._productRepository.update(id, payload);
 
     return result;
   }
 
   async deleteProductById(id: number) {
-    const product = await this._repository.get(id);
+    const product = await this._productRepository.get(id);
 
     if (!product) {
       throw new NotFound('Produk tidak ditemukan');
     }
 
-    const result = await this._repository.delete(id);
+    const result = await this._productRepository.delete(id);
 
     return result;
   }
 
   async getFileMetadata(filename: string) {
-    const result = await this._repository.getByFilename(filename);
+    const result = await this._productRepository.getByFilename(filename);
 
     if (!result) {
       throw new NotFound('File tidak ditemukan');
@@ -91,7 +96,7 @@ class ProductService {
 
       let filepath = path.join(process.cwd(), 'uploads', filename);
 
-      if (filename !== 'default.png') {
+      if (filename !== 'default-product.jpg') {
         filepath = path.join(process.cwd(), 'uploads', dirName, filename);
       }
 
@@ -110,7 +115,7 @@ class ProductService {
   }
 
   async getFileMetadataById(id: number) {
-    const result = await this._repository.get(id);
+    const result = await this._productRepository.get(id);
 
     if (!result) {
       throw new NotFound('Gambar produk tidak ditemukan');
@@ -123,7 +128,7 @@ class ProductService {
 
       let filepath = path.join(process.cwd(), 'uploads', filename!);
 
-      if (filename !== 'default-product.png') {
+      if (filename !== 'default-product.jpg') {
         filepath = path.join(process.cwd(), 'uploads', dirName, filename!);
       }
 
@@ -142,7 +147,13 @@ class ProductService {
   }
 
   async getRangeProductPrice() {
-    const result = await this._repository.getRangePrice();
+    const result = await this._productRepository.getRangePrice();
+
+    return result;
+  }
+
+  async getAllCategories() {
+    const result = await this._categoryRepository.find();
 
     return result;
   }
