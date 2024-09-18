@@ -115,16 +115,16 @@ class ProductService {
   }
 
   async getFileMetadataById(id: number) {
-    const result = await this._productRepository.get(id);
+    const product = await this._productRepository.get(id);
 
-    if (!result) {
+    if (!product) {
       throw new NotFound('Gambar produk tidak ditemukan');
     }
 
     try {
       const now = new Date().toISOString();
       const dirName = now.split('T')[0];
-      const filename = result.products.image;
+      const filename = product.image;
 
       let filepath = path.join(process.cwd(), 'uploads', filename!);
 
