@@ -11,6 +11,7 @@ class ProductController {
     this.getAllProducts = this.getAllProducts.bind(this);
     this.getProductById = this.getProductById.bind(this);
     this.getMinMaxProductPrice = this.getMinMaxProductPrice.bind(this);
+    this.getProductCategories = this.getProductCategories.bind(this);
     this.searchAllProducts = this.searchAllProducts.bind(this);
     this.downloadProductImage = this.downloadProductImage.bind(this);
     this.downloadProductImageById = this.downloadProductImageById.bind(this);
@@ -125,6 +126,24 @@ class ProductController {
         {
           statusCode: StatusCodes.OK,
           message: 'Berhasil mendapatkan range produk',
+          status: 'success',
+          data: response,
+        },
+        res
+      );
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getProductCategories(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const response = await this._service.getAllCategories();
+
+      return sendResponse(
+        {
+          statusCode: StatusCodes.OK,
+          message: 'Berhasil mendapatkan kategori',
           status: 'success',
           data: response,
         },

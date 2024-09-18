@@ -1,8 +1,8 @@
 import { MySql2Database } from 'drizzle-orm/mysql2';
 import { between, eq, like, max, min } from 'drizzle-orm';
 import logger from '@configs/logger';
-import CategoryModel from '@models/category.model';
-import ProductModel, { Product } from '@models/products.model';
+import CategoryModel, { categories } from '@models/category.model';
+import ProductModel, { Product, products } from '@models/products.model';
 
 class ProductRepository {
   constructor(private _db: MySql2Database<Record<string, never>>) {
@@ -32,19 +32,68 @@ class ProductRepository {
 
   async find(range: number) {
     let result = await this._db
-      .select()
+      .select({
+        id: products.id,
+        name: products.name,
+        category: {
+          id: categories.id,
+          name: categories.name,
+        },
+        price: products.price,
+        availability: products.availability,
+        brand: products.brand,
+        description: products.description,
+        image: products.image,
+        createdAt: products.createdAt,
+        updatedAt: products.updatedAt,
+      })
       .from(ProductModel.table)
       .leftJoin(
         CategoryModel.table,
         eq(ProductModel.table.categoryId, CategoryModel.table.id)
       );
 
-    let sql = this._db.select().from(ProductModel.table).toSQL();
+    let sql = this._db
+      .select({
+        id: products.id,
+        name: products.name,
+        category: {
+          id: categories.id,
+          name: categories.name,
+        },
+        price: products.price,
+        availability: products.availability,
+        brand: products.brand,
+        description: products.description,
+        image: products.image,
+        createdAt: products.createdAt,
+        updatedAt: products.updatedAt,
+      })
+      .from(ProductModel.table)
+      .leftJoin(
+        CategoryModel.table,
+        eq(ProductModel.table.categoryId, CategoryModel.table.id)
+      )
+      .toSQL();
 
     if (range) {
       const { min } = await this.getRangePrice();
       result = await this._db
-        .select()
+        .select({
+          id: products.id,
+          name: products.name,
+          category: {
+            id: categories.id,
+            name: categories.name,
+          },
+          price: products.price,
+          availability: products.availability,
+          brand: products.brand,
+          description: products.description,
+          image: products.image,
+          createdAt: products.createdAt,
+          updatedAt: products.updatedAt,
+        })
         .from(ProductModel.table)
         .leftJoin(
           CategoryModel.table,
@@ -53,12 +102,27 @@ class ProductRepository {
         .where(between(ProductModel.table.price, min!, range));
 
       sql = this._db
-        .select()
+        .select({
+          id: products.id,
+          name: products.name,
+          category: {
+            id: categories.id,
+            name: categories.name,
+          },
+          price: products.price,
+          availability: products.availability,
+          brand: products.brand,
+          description: products.description,
+          image: products.image,
+          createdAt: products.createdAt,
+          updatedAt: products.updatedAt,
+        })
         .from(ProductModel.table)
         .leftJoin(
           CategoryModel.table,
           eq(ProductModel.table.categoryId, CategoryModel.table.id)
         )
+        .where(between(ProductModel.table.price, min!, range))
         .toSQL();
     }
 
@@ -70,12 +134,40 @@ class ProductRepository {
 
   async search(q: string) {
     const result = await this._db
-      .select()
+      .select({
+        id: products.id,
+        name: products.name,
+        category: {
+          id: categories.id,
+          name: categories.name,
+        },
+        price: products.price,
+        availability: products.availability,
+        brand: products.brand,
+        description: products.description,
+        image: products.image,
+        createdAt: products.createdAt,
+        updatedAt: products.updatedAt,
+      })
       .from(ProductModel.table)
       .where(like(ProductModel.table.name, `%${q}%`));
 
     const sql = this._db
-      .select()
+      .select({
+        id: products.id,
+        name: products.name,
+        category: {
+          id: categories.id,
+          name: categories.name,
+        },
+        price: products.price,
+        availability: products.availability,
+        brand: products.brand,
+        description: products.description,
+        image: products.image,
+        createdAt: products.createdAt,
+        updatedAt: products.updatedAt,
+      })
       .from(ProductModel.table)
       .where(like(ProductModel.table.name, `%${q}%`))
       .toSQL();
@@ -87,7 +179,21 @@ class ProductRepository {
 
   async get(id: number) {
     const [result] = await this._db
-      .select()
+      .select({
+        id: products.id,
+        name: products.name,
+        category: {
+          id: categories.id,
+          name: categories.name,
+        },
+        price: products.price,
+        availability: products.availability,
+        brand: products.brand,
+        description: products.description,
+        image: products.image,
+        createdAt: products.createdAt,
+        updatedAt: products.updatedAt,
+      })
       .from(ProductModel.table)
       .where(eq(ProductModel.table.id, id))
       .leftJoin(
@@ -96,7 +202,21 @@ class ProductRepository {
       );
 
     const sql = this._db
-      .select()
+      .select({
+        id: products.id,
+        name: products.name,
+        category: {
+          id: categories.id,
+          name: categories.name,
+        },
+        price: products.price,
+        availability: products.availability,
+        brand: products.brand,
+        description: products.description,
+        image: products.image,
+        createdAt: products.createdAt,
+        updatedAt: products.updatedAt,
+      })
       .from(ProductModel.table)
       .where(eq(ProductModel.table.id, id))
       .innerJoin(

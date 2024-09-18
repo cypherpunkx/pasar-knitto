@@ -6,6 +6,7 @@ logs/**/*
 !/uploads/**/.gitkeep
 !/uploads/**/default-profile.png
 !/uploads/**/default-product.png
+!/uploads/**/default-product.jpg
 /database/**/*
 !/database/**/.gitkeep
 *.tmp
