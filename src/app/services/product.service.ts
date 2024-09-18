@@ -3,7 +3,7 @@ import path from 'path';
 import { NotFound } from 'http-errors';
 import { Product } from '@models/products.model';
 import Validator from '@utils/validator';
-import ProductSchema from '@schemas/products.schema';
+import ProductSchema from '@schemas/product.schema';
 import logger from '@configs/logger';
 import ProductRepository from '@repositories/product.repository';
 import CategoryRepository from '@app/repositories/category.repository';
