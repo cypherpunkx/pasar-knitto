@@ -4,11 +4,11 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import compression from 'compression';
 import helmet from 'helmet';
-import logger from '@configs/logger';
+import path from 'path';
 import errorMiddleware from './middlewares/error.middleware';
 import productRoutes from './routes/product.routes';
 import authRoutes from './routes/auth.routes';
-import path from 'path';
+import logger from '@configs/logger';
 
 const app = express();
 

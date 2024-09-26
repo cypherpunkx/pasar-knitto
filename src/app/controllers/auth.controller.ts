@@ -27,14 +27,13 @@ class AuthController {
         password,
       };
 
-      const response = await this._service.register(payload);
+      await this._service.register(payload);
 
       return sendResponse(
         {
           statusCode: StatusCodes.CREATED,
           message: 'Pendaftaran berhasil',
           status: 'success',
-          data: response,
         },
         res
       );
