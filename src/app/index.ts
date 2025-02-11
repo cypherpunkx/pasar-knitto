@@ -6,8 +6,9 @@ import compression from 'compression';
 import helmet from 'helmet';
 import path from 'path';
 import errorMiddleware from './middlewares/error.middleware';
-import productRoutes from './routes/product.routes';
+import defaultRoutes from './routes/default.routes';
 import authRoutes from './routes/auth.routes';
+import productRoutes from './routes/product.routes';
 import logger from '@configs/logger';
 
 const app = express();
@@ -28,6 +29,7 @@ app.use((req, _res, next) => {
   next();
 });
 
+app.use('/', defaultRoutes);
 app.use('/api/v1/pasar-knitto/auth', authRoutes);
 app.use('/api/v1/pasar-knitto/products', productRoutes);
 

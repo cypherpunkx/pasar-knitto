@@ -103,7 +103,7 @@ class ProductController {
       return sendResponse(
         {
           statusCode: StatusCodes.OK,
-          message: 'Berhasil mendapatkan semua produk',
+          message: 'Berhasil mendapatkan produk',
           status: 'success',
           data: response,
         },

@@ -8,4 +8,8 @@ export default {
   DB_PORT: +process.env.DB_PORT! || 3306,
   SECRET: process.env.SECRET || 'secret',
   FILE_SIZE_LIMITS: +process.env.FILE_SIZE_LIMITS! || 1024 * 1024 * 5,
+  GITHUB_PERSONAL_ACCESS_TOKEN: process.env.GITHUB_PERSONAL_ACCESS_TOKEN,
+  GITHUB_URL: process.env.GITHUB_URL,
+  GITHUB_REPO: process.env.GITHUB_REPO,
+  GITHUB_OWNER: process.env.GITHUB_OWNER,
 };

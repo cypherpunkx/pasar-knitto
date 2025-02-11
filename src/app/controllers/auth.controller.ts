@@ -78,7 +78,7 @@ class AuthController {
       return sendResponse(
         {
           statusCode: StatusCodes.CREATED,
-          message: 'Profil diperbaharui',
+          message: 'Profil',
           status: 'success',
           data: response,
         },
